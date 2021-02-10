@@ -74,7 +74,7 @@ pipelines:
           inputResources:
             - name: test_results
           outputResources:
-            - name: deploy_artifact_version
+            - name: deploy_rb_version
         execution:
           onExecute:
             - echo "Hello world. This step will test your app"
