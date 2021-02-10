@@ -66,7 +66,7 @@ pipelines:
             - odd=$(($run_number%2))
             - if [ "$odd" != 0 ]; then write_output test_results "tests_passed=false"; else write_output test_results "tests_passed=true"; fi
 
-  - name: app_test_pipeline
+  - name: app_release_pipeline
     steps:
       - name: app_test
         type: Bash
