@@ -1,0 +1,3 @@
+gitProvider: manishas_jfrog
+artifactory: demoArt
+repoPath: manishas-jfrog/jfrog-pipeline-of-pipelines-view
