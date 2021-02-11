@@ -21,12 +21,12 @@ resources:
   - name: dev_build_output
     type: PropertyBag
     configuration:
-      run_number: 1
+      run_no: 1
 
   - name: msvc1_dev_build_output
     type: PropertyBag
     configuration:
-      run_number: 1
+      run_no: 1
 
   - name: test_results
     type: PropertyBag
@@ -66,7 +66,7 @@ pipelines:
         execution:
           onExecute:
             - echo "Hello world. This step will build your app"
-            - write_output dev_build_output run_number=$run_number
+            - write_output dev_build_output run_no=$run_number
 
   - name: msvc1_build_pipeline
     steps:
@@ -90,7 +90,7 @@ pipelines:
         execution:
           onExecute:
             - echo "Hello world. This step will build your app"
-            - write_output msvc1_dev_build_output run_number=$run_number
+            - write_output msvc1_dev_build_output run_no=$run_number
 
   - name: msvc1_test_pipeline
     steps:
