@@ -2,3 +2,4 @@ gitProvider: manishas_jfrog
 artifactory: demoArt
 repoPath: manishas-jfrog/jfrog-pipeline-of-pipelines-view
 repoPathMsvc1: manishas-jfrog/jfrog-pipelines-go-sample
+repoPathMsvc2: manishas-jfrog/jfrog-pipelines-maven-sample
