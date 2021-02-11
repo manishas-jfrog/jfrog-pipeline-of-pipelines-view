@@ -181,16 +181,27 @@ pipelines:
 
   - name: app_release_pipeline
     steps:
-      - name: app_test
+      - name: app_release
         type: Bash
         configuration:
           inputResources:
             - name: test_results
             - name: msvc1_test_results
-            - name: msvc2_test_results
           outputResources:
             - name: deploy_rb_version
         execution:
           onExecute:
             - echo "Hello world. This step will test your app"
             - write_output deploy_rb_version rb_version=$run_number
+
+  - name: app_post_release_pipeline
+    steps:
+      - name: app_post_release
+        type: Bash
+        configuration:
+          inputResources:
+            - name: msvc2_test_results
+            - name: deploy_rb_version
+        execution:
+          onExecute:
+            - echo "Hello world. This step will do post release activities"
