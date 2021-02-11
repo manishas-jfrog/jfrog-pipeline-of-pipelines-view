@@ -10,12 +10,30 @@ resources:
       branches:
         include: master
 
+  - name: msvc1_repo
+    type: GitRepo
+    configuration:
+      gitProvider: {{ .Values.gitProvider }}                      # <-- replace with your integration
+      path: {{ .Values.repoPathMsvc1 }}    # <-- replace with your repository name
+      branches:
+        include: master
+
   - name: dev_build_output
     type: PropertyBag
     configuration:
       run_number: 1
 
+  - name: msvc1_dev_build_output
+    type: PropertyBag
+    configuration:
+      run_number: 1
+
   - name: test_results
+    type: PropertyBag
+    configuration:
+      tests_passed: true
+
+  - name: msvc1_test_results
     type: PropertyBag
     configuration:
       tests_passed: true
@@ -50,6 +68,44 @@ pipelines:
             - echo "Hello world. This step will build your app"
             - write_output dev_build_output run_number=$run_number
 
+  - name: msvc1_build_pipeline
+    steps:
+      - name: msvc1_build
+        type: Bash
+        configuration:
+          inputResources:
+            - name: msvc1_repo
+            - name: docker_base_image
+          runtime:
+            type: image
+            image:
+              custom:
+                name: $res_docker_base_image_imageName
+                tag: $res_docker_base_image_imageTag
+                registry: {{ .Values.artifactory }}
+                sourceRepository: docker-local
+                autoPull: true
+          outputResources:
+            - name: msvc1_dev_build_output
+        execution:
+          onExecute:
+            - echo "Hello world. This step will build your app"
+            - write_output msvc1_dev_build_output run_number=$run_number
+
+  - name: msvc1_test_pipeline
+    steps:
+      - name: msvc1_test
+        type: Bash
+        configuration:
+          inputResources:
+            - name: msvc1_dev_build_output
+          outputResources:
+            - name: msvc1_test_results
+        execution:
+          onExecute:
+            - echo "Hello world. This step will test your app"
+            - odd=$(($run_number%2))
+            - if [ "$odd" != 0 ]; then write_output test_results "tests_passed=false"; else write_output test_results "tests_passed=true"; fi
 
   - name: app_test_pipeline
     steps:
@@ -73,6 +129,7 @@ pipelines:
         configuration:
           inputResources:
             - name: test_results
+            - name: msvc1_test_results
           outputResources:
             - name: deploy_rb_version
         execution:
