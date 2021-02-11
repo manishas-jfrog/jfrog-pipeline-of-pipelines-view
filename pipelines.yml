@@ -201,7 +201,7 @@ pipelines:
 
   - name: msvc2_release_pipeline
     steps:
-      - name: app_release
+      - name: msvc2_release
         type: Bash
         configuration:
           inputResources:
