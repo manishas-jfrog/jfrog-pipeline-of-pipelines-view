@@ -8,7 +8,7 @@ resources:
       gitProvider: {{ .Values.gitProvider }}                      # <-- replace with your integration
       path: {{ .Values.repoPath }}    # <-- replace with your repository name
       branches:
-        include: master
+        include: main
 
   - name: msvc1_repo
     type: GitRepo
