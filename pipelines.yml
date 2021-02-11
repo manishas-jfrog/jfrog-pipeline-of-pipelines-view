@@ -43,6 +43,11 @@ resources:
     configuration:
       rb_version: 1
 
+  - name: deploy_msvc2_rb_version
+    type: PropertyBag
+    configuration:
+      rb_version: 1
+
   - name: msvc2_repo
     type: GitRepo
     configuration:
@@ -194,14 +199,28 @@ pipelines:
             - echo "Hello world. This step will test your app"
             - write_output deploy_rb_version rb_version=$run_number
 
+  - name: msvc2_release_pipeline
+    steps:
+      - name: app_release
+        type: Bash
+        configuration:
+          inputResources:
+            - name: msvc2_test_results
+          outputResources:
+            - name: deploy_msvc2_rb_version
+        execution:
+          onExecute:
+            - echo "Hello world. This step will test your app"
+            - write_output deploy_msvc2_rb_version rb_version=$run_number
+
   - name: app_post_release_pipeline
     steps:
       - name: app_post_release
         type: Bash
         configuration:
           inputResources:
-            - name: msvc2_test_results
             - name: deploy_rb_version
+            - name: deploy_msvc2_rb_version
         execution:
           onExecute:
             - echo "Hello world. This step will do post release activities"
