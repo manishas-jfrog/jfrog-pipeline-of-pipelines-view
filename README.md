@@ -1,3 +1,3 @@
 # jfrog-pipeline-of-pipelines-view
 
-more tests
+now testing with skipRun
